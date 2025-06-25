@@ -284,6 +284,9 @@
       }
     }
   </style>
+ <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
   <div class="bg-animated"></div>
@@ -315,6 +318,14 @@
   </div>
 
   <script>
+    // 🧩 Configuración personalizada de tu Firebase
+    const firebaseConfig = {
+      databaseURL: "https://djpichi-6ace3-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     let isAdmin = false;
 
     function login() {
@@ -322,13 +333,15 @@
       const loginMsg = document.getElementById('loginMsg');
       const loginSection = document.getElementById('loginSection');
 
-      if (password === 'admin123') {
+      if (password === 'djpichi123') {
         isAdmin = true;
         loginMsg.textContent = '';
         loginSection.classList.add('fade-out');
-
         setTimeout(() => {
           loginSection.style.display = 'none';
+          // recargar peticiones con botones admin
+          requestsList.innerHTML = '<h2>Peticiones Recibidas</h2>';
+          loadRequests();
         }, 500);
       } else {
         loginMsg.textContent = 'Contraseña incorrecta';
@@ -340,13 +353,29 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-
       const song = document.getElementById('song').value.trim();
       const artist = document.getElementById('artist').value.trim();
       const dedication = document.getElementById('dedication').value.trim();
 
       if (!song || !artist) return;
 
+      const newRequest = { song, artist, dedication };
+      db.ref('requests').push(newRequest);
+      form.reset();
+    });
+
+    function loadRequests() {
+      db.ref('requests').on('value', snapshot => {
+        requestsList.innerHTML = '<h2>Peticiones Recibidas</h2>';
+        snapshot.forEach(child => {
+          const req = child.val();
+          const key = child.key;
+          addRequestToDOM(req, key);
+        });
+      });
+    }
+
+    function addRequestToDOM({ song, artist, dedication }, key) {
       const requestBox = document.createElement('div');
       requestBox.classList.add('request');
 
@@ -368,13 +397,15 @@
         });
 
         requestBox.querySelector('.btn-delete').addEventListener('click', () => {
-          requestsList.removeChild(requestBox);
+          db.ref('requests/' + key).remove();
         });
       }
 
       requestsList.appendChild(requestBox);
-      form.reset();
-    });
+    }
+
+    // Carga inicial
+    loadRequests();
   </script>
 </body>
 </html>
