@@ -284,7 +284,7 @@
       }
     }
   </style>
- <!-- Firebase SDKs -->
+<!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
@@ -301,8 +301,8 @@
     <img src="logopichi.png" alt="Logo DJ Pichi">
     <h1>DJ Pichi</h1>
     <div class="social-links">
-      <a href="https://www.instagram.com/djpichii" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@djpichii" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/djpichi" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@djpichi" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     </div>
   </header>
 
@@ -310,6 +310,7 @@
     <input type="text" id="song" placeholder="Nombre de la canción" required />
     <input type="text" id="artist" placeholder="Artista" required />
     <textarea id="dedication" placeholder="Dedicatoria (opcional)"></textarea>
+    <input type="text" id="spotify" placeholder="Enlace de Spotify (opcional)" />
     <button type="submit">Enviar petición</button>
   </form>
 
@@ -318,7 +319,7 @@
   </div>
 
   <script>
-    // 🧩 Configuración personalizada de tu Firebase
+    // Tu configuración de Firebase
     const firebaseConfig = {
       databaseURL: "https://djpichi-6ace3-default-rtdb.firebaseio.com/"
     };
@@ -333,13 +334,12 @@
       const loginMsg = document.getElementById('loginMsg');
       const loginSection = document.getElementById('loginSection');
 
-      if (password === 'djpichi123') {
+      if (password === 'admin123') {
         isAdmin = true;
         loginMsg.textContent = '';
         loginSection.classList.add('fade-out');
         setTimeout(() => {
           loginSection.style.display = 'none';
-          // recargar peticiones con botones admin
           requestsList.innerHTML = '<h2>Peticiones Recibidas</h2>';
           loadRequests();
         }, 500);
@@ -356,10 +356,11 @@
       const song = document.getElementById('song').value.trim();
       const artist = document.getElementById('artist').value.trim();
       const dedication = document.getElementById('dedication').value.trim();
+      const spotify = document.getElementById('spotify').value.trim();
 
       if (!song || !artist) return;
 
-      const newRequest = { song, artist, dedication };
+      const newRequest = { song, artist, dedication, spotify };
       db.ref('requests').push(newRequest);
       form.reset();
     });
@@ -375,7 +376,7 @@
       });
     }
 
-    function addRequestToDOM({ song, artist, dedication }, key) {
+    function addRequestToDOM({ song, artist, dedication, spotify }, key) {
       const requestBox = document.createElement('div');
       requestBox.classList.add('request');
 
@@ -388,6 +389,12 @@
       requestBox.innerHTML = `
         <strong>${song}</strong> - ${artist}
         <em>${dedication || 'Sin dedicatoria'}</em>
+        ${spotify ? `
+          <div style="margin-top:10px">
+            <iframe style="border-radius:12px" 
+              src="${convertToEmbed(spotify)}" 
+              width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
+          </div>` : ''}
         ${buttonsHTML}
       `;
 
@@ -404,7 +411,13 @@
       requestsList.appendChild(requestBox);
     }
 
-    // Carga inicial
+    function convertToEmbed(url) {
+      return url.replace('/track/', '/embed/track/')
+                .replace('/album/', '/embed/album/')
+                .replace('/playlist/', '/embed/playlist/')
+                .split('?')[0];
+    }
+
     loadRequests();
   </script>
 </body>
