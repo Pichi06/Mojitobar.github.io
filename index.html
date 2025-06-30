@@ -1,424 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DJ Pichi - Pide tu canción</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Montserrat&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DJ Pichii | Redes Sociales</title>
   <style>
-    /* === Body y fondo neón === */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
     body {
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at center, #000000, #050505 90%);
-      color: #00ffcc;
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top, #000000, #1f1f1f 90%);
+      color: #ffffff;
+      text-align: center;
       overflow-x: hidden;
     }
 
-    /* Fondo animado de puntos con color neón */
-    .bg-animated {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle, rgba(0,255,204,0.2) 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: move 20s linear infinite;
+    .container {
+      padding: 40px 20px;
     }
 
-    @keyframes move {
-      from {background-position: 0 0;}
-      to {background-position: 1000px 1000px;}
+    .logo {
+      width: 220px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #ff007f;
     }
 
-    /* Header centrado y con glow */
-    header {
-      text-align: center;
-      padding: 40px 20px 10px;
-    }
-
-    header img {
-      max-width: 100px;
-      filter: drop-shadow(0 0 8px #00ffcc);
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px #ff007f;
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px #ff3399;
+      }
     }
 
     h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.8rem;
-      margin: 10px 0;
-      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+      font-size: 3em;
+      color: #ff007f;
+      margin-bottom: 10px;
     }
 
-    /* Iconos sociales con efecto glow neón */
+    .desc {
+      font-size: 1.2em;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .social-links a {
-      color: #00ffcc;
-      margin: 0 10px;
-      font-size: 1.7rem;
-      transition: color 0.3s, text-shadow 0.3s;
-      text-shadow: 0 0 8px #00ffcc;
+      display: inline-block;
+      margin: 15px 10px;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      color: #fff;
+      background-color: #ff007f;
+      text-decoration: none;
+      border-radius: 40px;
+      transition: 0.4s;
     }
 
     .social-links a:hover {
-      color: #1db954;
-      text-shadow: 0 0 15px #1db954, 0 0 30px #1db954;
-    }
-
-    /* Formulario con fondo oscuro, bordes redondeados y glow */
-    form {
-      background: #001f1a;
-      padding: 25px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 450px;
-      margin: 30px auto;
-      box-shadow: 0 0 15px #00ffcc;
-      border: 1px solid #00ffcc;
-      transition: box-shadow 0.3s ease;
-    }
-
-    form:hover {
-      box-shadow: 0 0 25px #1db954;
-    }
-
-    input, textarea, button {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: inherit;
-      outline: none;
-      background: #00332f;
-      color: #00ffcc;
-      box-shadow: 0 0 5px #00ffcc inset;
-      transition: box-shadow 0.3s ease;
-    }
-
-    input:focus, textarea:focus {
-      box-shadow: 0 0 12px #1db954 inset;
-    }
-
-    button {
-      background: #00ffcc;
-      color: #002e26;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px #00ffcc;
-      transition: box-shadow 0.3s, background 0.3s;
-    }
-
-    button:hover {
-      background: #1db954;
-      box-shadow: 0 0 25px #1db954, 0 0 40px #1db954;
-      color: white;
-    }
-
-    /* Lista de peticiones */
-    .requests {
-      max-width: 700px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
-
-    .requests h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 25px;
-      text-shadow: 0 0 15px #00ffcc;
-      text-align: center;
-    }
-
-    /* Caja de petición con glow y efecto hover */
-    .request {
-      background: #002e26;
-      padding: 22px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      box-shadow: 0 0 12px #00ffcc;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
-    }
-
-    .request:hover {
+      background-color: #ff3399;
+      box-shadow: 0 0 15px #ff3399;
       transform: scale(1.05);
-      box-shadow: 0 0 25px #1db954;
     }
 
-    .request strong {
-      color: #00ffcc;
-      font-size: 1.3rem;
-      text-shadow: 0 0 8px #00ffcc;
+    footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #888;
     }
 
-    .request em {
-      color: #a0fff7;
-      display: block;
-      margin-top: 10px;
-      font-style: italic;
-    }
-
-    /* Botones dentro de peticiones */
-    .buttons {
-      margin-top: 15px;
-      display: flex;
-      gap: 12px;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: box-shadow 0.3s, background-color 0.3s;
-      box-shadow: 0 0 10px transparent;
-    }
-
-    .btn-played {
-      background-color: #1db954;
-      color: #002e26;
-      box-shadow: 0 0 15px #1db954;
-    }
-
-    .btn-played:hover {
-      box-shadow: 0 0 30px #1db954, 0 0 50px #1db954;
-    }
-
-    .btn-delete {
-      background-color: #e74c3c;
-      color: white;
-      box-shadow: 0 0 15px #e74c3c;
-    }
-
-    .btn-delete:hover {
-      box-shadow: 0 0 30px #e74c3c, 0 0 50px #e74c3c;
-    }
-
-    /* Estado reproducida */
-    .played {
-      background: #00332f !important;
-      opacity: 0.75;
-      box-shadow: 0 0 20px #1db954 inset !important;
-      text-decoration: line-through;
-    }
-
-    /* Sección de login admin */
-    #loginSection {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0, 51, 40, 0.85);
-      padding: 14px 18px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 10;
-      box-shadow: 0 0 15px #00ffcc;
-    }
-
-    #loginSection input {
-      padding: 8px 12px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      background: #002e26;
-      color: #00ffcc;
-      box-shadow: 0 0 10px #00ffcc inset;
-      transition: box-shadow 0.3s ease;
-      width: 140px;
-    }
-
-    #loginSection input:focus {
-      box-shadow: 0 0 18px #1db954 inset;
-    }
-
-    #loginSection button {
-      padding: 8px 14px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      background: #00ffcc;
-      color: #002e26;
-      cursor: pointer;
-      box-shadow: 0 0 15px #00ffcc;
-      transition: box-shadow 0.3s, background 0.3s;
-    }
-
-    #loginSection button:hover {
-      background: #1db954;
-      box-shadow: 0 0 30px #1db954, 0 0 50px #1db954;
-      color: white;
-    }
-
-    #loginMsg {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      font-size: 0.85rem;
-      color: #ff4d4d;
-      margin-top: 6px;
-      text-shadow: 0 0 8px #ff4d4d;
-    }
-
-    .fade-out {
-      animation: fadeOut 0.5s ease forwards;
-    }
-
-    @keyframes fadeOut {
-      from {
-        opacity: 1;
-        transform: scale(1);
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2em;
       }
-      to {
-        opacity: 0;
-        transform: scale(0.95);
-        visibility: hidden;
+
+      .social-links a {
+        width: 80%;
+        margin: 10px auto;
+        display: block;
       }
     }
   </style>
-<!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
-  <div class="bg-animated"></div>
-
-  <div id="loginSection">
-    <input type="password" id="adminPass" placeholder="Admin clave" />
-    <button onclick="login()">Entrar</button>
-    <p id="loginMsg"></p>
-  </div>
-
-  <header>
-    <img src="logopichi.png" alt="Logo DJ Pichi">
-    <h1>DJ Pichi</h1>
-    <div class="social-links">
-      <a href="https://www.instagram.com/djpichii" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.tiktok.com/@djpichii" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+  <div class="container">
+    <img src="https://i.ibb.co/dmpVKX0/dj-pichii-logo.jpg" alt="DJ Pichii Logo" class="logo">
+    <h1>DJ Pichii</h1>
+    <div class="desc">
+      🎧 ¡Bienvenido al sitio oficial de DJ Pichii! <br>
+      Sígueme en redes para disfrutar de sets exclusivos, mixes en vivo y más contenido 🔥
     </div>
-  </header>
 
-  <form id="requestForm">
-    <input type="text" id="song" placeholder="Nombre de la canción" required />
-    <input type="text" id="artist" placeholder="Artista" required />
-    <textarea id="dedication" placeholder="Dedicatoria (opcional)"></textarea>
-    <input type="text" id="spotify" placeholder="Enlace de Spotify (opcional)" />
-    <button type="submit">Enviar petición</button>
-  </form>
+    <div class="social-links">
+      <a href="https://www.instagram.com/djpichii" target="_blank">Instagram</a>
+      <a href="https://www.tiktok.com/@djpichii" target="_blank">TikTok</a>
+    </div>
 
-  <div class="requests" id="requestsList">
-    <h2>Peticiones Recibidas</h2>
+    <footer>
+      © 2025 DJ Pichii. Todos los derechos reservados.
+    </footer>
   </div>
-
-  <script>
-    // Tu configuración de Firebase
-    const firebaseConfig = {
-      databaseURL: "https://djpichi-6ace3-default-rtdb.firebaseio.com/"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let isAdmin = false;
-
-    function login() {
-      const password = document.getElementById('adminPass').value;
-      const loginMsg = document.getElementById('loginMsg');
-      const loginSection = document.getElementById('loginSection');
-
-      if (password === 'admin123') {
-        isAdmin = true;
-        loginMsg.textContent = '';
-        loginSection.classList.add('fade-out');
-        setTimeout(() => {
-          loginSection.style.display = 'none';
-          requestsList.innerHTML = '<h2>Peticiones Recibidas</h2>';
-          loadRequests();
-        }, 500);
-      } else {
-        loginMsg.textContent = 'Contraseña incorrecta';
-      }
-    }
-
-    const form = document.getElementById('requestForm');
-    const requestsList = document.getElementById('requestsList');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const song = document.getElementById('song').value.trim();
-      const artist = document.getElementById('artist').value.trim();
-      const dedication = document.getElementById('dedication').value.trim();
-      const spotify = document.getElementById('spotify').value.trim();
-
-      if (!song || !artist) return;
-
-      const newRequest = { song, artist, dedication, spotify };
-      db.ref('requests').push(newRequest);
-      form.reset();
-    });
-
-    function loadRequests() {
-      db.ref('requests').on('value', snapshot => {
-        requestsList.innerHTML = '<h2>Peticiones Recibidas</h2>';
-        snapshot.forEach(child => {
-          const req = child.val();
-          const key = child.key;
-          addRequestToDOM(req, key);
-        });
-      });
-    }
-
-    function addRequestToDOM({ song, artist, dedication, spotify }, key) {
-      const requestBox = document.createElement('div');
-      requestBox.classList.add('request');
-
-      const buttonsHTML = isAdmin ? `
-        <div class="buttons">
-          <button class="btn btn-played">✅ Reproducida</button>
-          <button class="btn btn-delete">🗑️ Eliminar</button>
-        </div>` : '';
-
-      requestBox.innerHTML = `
-        <strong>${song}</strong> - ${artist}
-        <em>${dedication || 'Sin dedicatoria'}</em>
-        ${spotify ? `
-          <div style="margin-top:10px">
-            <iframe style="border-radius:12px" 
-              src="${convertToEmbed(spotify)}" 
-              width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" loading="lazy"></iframe>
-          </div>` : ''}
-        ${buttonsHTML}
-      `;
-
-      if (isAdmin) {
-        requestBox.querySelector('.btn-played').addEventListener('click', () => {
-          requestBox.classList.toggle('played');
-        });
-
-        requestBox.querySelector('.btn-delete').addEventListener('click', () => {
-          db.ref('requests/' + key).remove();
-        });
-      }
-
-      requestsList.appendChild(requestBox);
-    }
-
-    function convertToEmbed(url) {
-      return url.replace('/track/', '/embed/track/')
-                .replace('/album/', '/embed/album/')
-                .replace('/playlist/', '/embed/playlist/')
-                .split('?')[0];
-    }
-
-    loadRequests();
-  </script>
 </body>
 </html>
