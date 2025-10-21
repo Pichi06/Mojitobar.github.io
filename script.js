@@ -1,14 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // 🔧 Pega aquí tu configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyC73uE8DCepBb4Ovox02xjZq7sERUn11Do",
-  authDomain: "mojitos-bar-loteria.firebaseapp.com",
-  projectId: "mojitos-bar-loteria",
-  storageBucket: "mojitos-bar-loteria.firebasestorage.app",
-  messagingSenderId: "958146584765",
-  appId: "1:958146584765:web:117c6f10d63b401b8f97d4"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 // Inicializar Firebase
@@ -23,12 +23,14 @@ const dataTable = document.getElementById("dataTable");
 const adminLogin = document.getElementById("adminLogin");
 const loginBtn = document.getElementById("loginBtn");
 
-const ADMIN_PASSWORD = "mojitosbar2025"; // Cambia esta contraseña
+const ADMIN_PASSWORD = "mojitosbar2025"; // Cambia esta contraseña si quieres
 
+// Mostrar/ocultar formulario
 addTicketBtn.addEventListener("click", () => {
   formContainer.classList.toggle("hidden");
 });
 
+// Guardar nuevo boleto
 saveBtn.addEventListener("click", async () => {
   const boleto = document.getElementById("boleto").value;
   const nombre = document.getElementById("nombre").value;
@@ -39,39 +41,65 @@ saveBtn.addEventListener("click", async () => {
     return;
   }
 
-  await addDoc(collection(db, "boletos"), {
-    numero: boleto,
-    nombre: nombre,
-    telefono: telefono,
-    fecha: new Date().toLocaleString()
-  });
-
-  alert("✅ Boleto guardado correctamente");
-  document.getElementById("boleto").value = "";
-  document.getElementById("nombre").value = "";
-  document.getElementById("telefono").value = "";
+  try {
+    await addDoc(collection(db, "boletos"), {
+      numero: boleto,
+      nombre: nombre,
+      telefono: telefono,
+      fecha: new Date().toLocaleString()
+    });
+    alert("✅ Boleto guardado correctamente");
+    document.getElementById("boleto").value = "";
+    document.getElementById("nombre").value = "";
+    document.getElementById("telefono").value = "";
+  } catch (error) {
+    console.error("Error al guardar:", error);
+    alert("❌ Error al guardar el boleto");
+  }
 });
 
+// Login del administrador
 loginBtn.addEventListener("click", async () => {
   const pass = document.getElementById("adminPass").value;
   if (pass === ADMIN_PASSWORD) {
     adminLogin.classList.add("hidden");
     dataContainer.classList.remove("hidden");
-
-    const querySnapshot = await getDocs(collection(db, "boletos"));
-    dataTable.innerHTML = "";
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      dataTable.innerHTML += `
-        <tr>
-          <td>${data.numero}</td>
-          <td>${data.nombre}</td>
-          <td>${data.telefono}</td>
-          <td>${data.fecha}</td>
-        </tr>
-      `;
-    });
+    cargarBoletos();
   } else {
     alert("❌ Contraseña incorrecta");
   }
 });
+
+// Cargar y mostrar los boletos en la tabla
+async function cargarBoletos() {
+  const querySnapshot = await getDocs(collection(db, "boletos"));
+  dataTable.innerHTML = "";
+
+  querySnapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+      <td>${data.numero}</td>
+      <td>${data.nombre}</td>
+      <td>${data.telefono}</td>
+      <td>${data.fecha}</td>
+      <td><button class="deleteBtn" data-id="${docSnap.id}">🗑️</button></td>
+    `;
+
+    dataTable.appendChild(fila);
+  });
+
+  // Agregar eventos de borrar a cada botón
+  document.querySelectorAll(".deleteBtn").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      const id = e.target.getAttribute("data-id");
+      const confirmar = confirm("¿Seguro que quieres eliminar este boleto?");
+      if (confirmar) {
+        await deleteDoc(doc(db, "boletos", id));
+        alert("🗑️ Boleto eliminado correctamente");
+        cargarBoletos(); // Recargar lista
+      }
+    });
+  });
+}
