@@ -40,3 +40,12 @@ th, td {
   border: 1px solid #444;
   padding: 8px;
 }
+
+.deleteBtn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
