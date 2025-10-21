@@ -41,11 +41,3 @@ th, td {
   padding: 8px;
 }
 
-.deleteBtn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-}
