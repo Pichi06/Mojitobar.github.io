@@ -41,15 +41,4 @@ th, td {
   padding: 8px;
 }
 
-.deleteBtn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
 
-.deleteBtn:hover {
-  background-color: #b71c1c;
-}
