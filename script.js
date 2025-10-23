@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // 🔧 Configuración de Firebase
 const firebaseConfig = {
@@ -79,22 +79,8 @@ loginBtn.addEventListener("click", async () => {
         <td>${data.telefono}</td>
         <td>${data.serie || "-"}</td>
         <td>${data.fecha}</td>
-        <td><button class="deleteBtn" data-id="${docSnap.id}">🗑️</button></td>
       `;
       dataTable.appendChild(fila);
-    });
-
-    // Activar botones de eliminar
-    document.querySelectorAll(".deleteBtn").forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        const id = e.target.getAttribute("data-id");
-        const confirmar = confirm("¿Seguro que quieres eliminar este boleto?");
-        if (confirmar) {
-          await deleteDoc(doc(db, "boletos", id));
-          alert("🗑️ Boleto eliminado correctamente");
-          location.reload();
-        }
-      });
     });
   } else {
     alert("❌ Contraseña incorrecta");
